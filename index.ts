@@ -1,6 +1,6 @@
 import { Canvy } from "./canvy/canvy.ts";
 
-export function GAME_STARTER(canvas?: HTMLCanvasElement) {
+export function TESTER(canvas?: HTMLCanvasElement) {
   if (!canvas) return;
   const cvy = new Canvy(canvas);
   cvy.height = 200;
