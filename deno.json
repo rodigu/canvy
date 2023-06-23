@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "build": "deno task bundle",
+    "bundle": "deno bundle --watch index.ts game.bundle.js --config tsconfig.json",
+    "minify": "minifier game.bundle.js"
+  }
+}
