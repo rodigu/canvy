@@ -2,6 +2,11 @@
 
 Deno library for basic canvas manipulation inspired by P5JS.
 
+## Testing
+
+Test Canvy's functions from `index.ts`.
+Call `deno task watch` to watch for changes and continuously build the output file.
+
 ## Development References
 
 ### Problems
@@ -24,3 +29,7 @@ document.body.appendChild(myImage);
 
 myImage.complete;
 ```
+
+### Notes
+
+Canvy is meant mainly for games, as such the default behavior of interpolation between pixels was disabled in favor of nearest-neighbor (which helps preserve pixel-art when scaling assets).
