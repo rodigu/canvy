@@ -30,6 +30,7 @@ export class Canvy implements CanvyDrawing, CanvyImage, CanvyTransform {
   readonly scale = CanvyTransform.prototype.scale;
   readonly transform = CanvyTransform.prototype.transform;
   readonly translate = CanvyTransform.prototype.translate;
+  readonly rotate = CanvyTransform.prototype.rotate;
 
   constructor(canvas: HTMLCanvasElement, imageSmoothingEnabled = false) {
     this.cvs = canvas;
