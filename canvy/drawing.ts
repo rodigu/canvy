@@ -10,6 +10,15 @@ import { CanvyStatics } from "./statics.ts";
  * @typedef {CanvyDrawing}
  */
 export class CanvyDrawing {
+  /**
+   * Canvas `fillStyle` wrapper
+   * @date 6/24/2023 - 4:19:17 PM
+   *
+   * @param {Canvy} this
+   * @param {number} red
+   * @param {number} green
+   * @param {number} blue
+   */
   fill(this: Canvy, red: number, green: number, blue: number) {
     this.ctx.fillStyle = CanvyStatics.ColorToRGB({ red, green, blue });
   }

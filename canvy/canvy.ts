@@ -1,4 +1,5 @@
 import { CanvyDrawing } from "./drawing.ts";
+import { CanvyImage } from "./image.ts";
 
 export interface Color {
   red: number;
@@ -6,7 +7,10 @@ export interface Color {
   blue: number;
 }
 
-export class Canvy implements CanvyDrawing {
+export class Canvy implements CanvyDrawing, CanvyImage {
+  public frameRate: number;
+  public draw: (() => void) | undefined;
+
   readonly cvs: HTMLCanvasElement;
   readonly ctx: CanvasRenderingContext2D;
 
@@ -16,10 +20,16 @@ export class Canvy implements CanvyDrawing {
   readonly strokeStyle = CanvyDrawing.prototype.strokeStyle;
   readonly rect = CanvyDrawing.prototype.rect;
 
-  constructor(canvas: HTMLCanvasElement) {
+  // Image
+  readonly loadImage = CanvyImage.prototype.loadImage;
+  readonly image = CanvyImage.prototype.image;
+  readonly imageSection = CanvyImage.prototype.imageSection;
+
+  constructor(canvas: HTMLCanvasElement, imageSmoothingEnabled = false) {
     this.cvs = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.ctx.imageSmoothingEnabled = false;
+    this.ctx.imageSmoothingEnabled = imageSmoothingEnabled;
+    this.frameRate = 40;
   }
 
   set height(h: number) {
@@ -28,5 +38,10 @@ export class Canvy implements CanvyDrawing {
 
   set width(w: number) {
     this.cvs.width = w;
+  }
+
+  initiate() {
+    if (!this.draw) return;
+    setInterval(this.draw, 1000 / this.frameRate);
   }
 }
