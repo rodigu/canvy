@@ -45,17 +45,56 @@ class CanvyDrawing {
         this.ctx.fillRect(x, y, width, height);
     }
 }
+class CanvyImage {
+    loadImage(src) {
+        const img = new Image();
+        img.src = src;
+        return img;
+    }
+    image(img, x, y, wid, hei) {
+        wid ??= img.width;
+        hei ??= img.height;
+        this.ctx.drawImage(img, x, y, wid, hei);
+    }
+    imageSection(img, imgX, imgY, imgWid, imgHei, canvasX, canvasY, canvasWid, canvasHei) {
+        this.ctx.drawImage(img, imgX, imgY, imgWid, imgHei, canvasX, canvasY, canvasWid, canvasHei);
+    }
+}
+class CanvyTransform {
+    scale(x, y) {
+        this.ctx.scale(x, y);
+    }
+    translate(x, y) {
+        this.ctx.translate(x, y);
+    }
+    transform(horizontalScale, horizontalSkew, verticalSkew, verticalScale, horizontalMove, verticalMove) {
+        this.ctx.transform(horizontalScale, horizontalSkew, verticalSkew, verticalScale, horizontalMove, verticalMove);
+    }
+    rotate(radians) {
+        this.ctx.rotate(radians);
+    }
+}
 class Canvy {
+    frameRate;
+    draw;
     cvs;
     ctx;
     fill = CanvyDrawing.prototype.fill;
     strokeWeight = CanvyDrawing.prototype.strokeWeight;
     strokeStyle = CanvyDrawing.prototype.strokeStyle;
     rect = CanvyDrawing.prototype.rect;
-    constructor(canvas){
+    loadImage = CanvyImage.prototype.loadImage;
+    image = CanvyImage.prototype.image;
+    imageSection = CanvyImage.prototype.imageSection;
+    scale = CanvyTransform.prototype.scale;
+    transform = CanvyTransform.prototype.transform;
+    translate = CanvyTransform.prototype.translate;
+    rotate = CanvyTransform.prototype.rotate;
+    constructor(canvas, imageSmoothingEnabled = false){
         this.cvs = canvas;
         this.ctx = canvas.getContext("2d");
-        this.ctx.imageSmoothingEnabled = false;
+        this.ctx.imageSmoothingEnabled = imageSmoothingEnabled;
+        this.frameRate = 40;
     }
     set height(h) {
         this.cvs.height = h;
@@ -63,8 +102,12 @@ class Canvy {
     set width(w) {
         this.cvs.width = w;
     }
+    initiate() {
+        if (!this.draw) return;
+        setInterval(this.draw, 1000 / this.frameRate);
+    }
 }
-function GAME_STARTER(canvas) {
+function TESTER(canvas) {
     if (!canvas) return;
     const cvy = new Canvy(canvas);
     cvy.height = 200;
@@ -72,4 +115,4 @@ function GAME_STARTER(canvas) {
     cvy.fill(100, 120, 100);
     cvy.rect(20, 20, 20, 20);
 }
-export { GAME_STARTER as GAME_STARTER };
+export { TESTER as TESTER };
