@@ -27,4 +27,8 @@ export class CanvyTransform {
       verticalMove
     );
   }
+
+  rotate(this: Canvy, radians: number) {
+    this.ctx.rotate(radians);
+  }
 }
