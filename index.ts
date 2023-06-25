@@ -1,4 +1,4 @@
-import { Canvy } from "./canvy/canvy.ts";
+import { Canvy } from "./src/canvy.ts";
 
 export function TESTER(canvas?: HTMLCanvasElement) {
   if (!canvas) return;
