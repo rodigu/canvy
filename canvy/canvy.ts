@@ -1,5 +1,6 @@
 import { CanvyDrawing } from "./drawing.ts";
 import { CanvyImage } from "./image.ts";
+import { CanvyTransform } from "./transform.ts";
 
 export interface Color {
   red: number;
@@ -7,7 +8,7 @@ export interface Color {
   blue: number;
 }
 
-export class Canvy implements CanvyDrawing, CanvyImage {
+export class Canvy implements CanvyDrawing, CanvyImage, CanvyTransform {
   public frameRate: number;
   public draw: (() => void) | undefined;
 
@@ -24,6 +25,11 @@ export class Canvy implements CanvyDrawing, CanvyImage {
   readonly loadImage = CanvyImage.prototype.loadImage;
   readonly image = CanvyImage.prototype.image;
   readonly imageSection = CanvyImage.prototype.imageSection;
+
+  // Transformations
+  readonly scale = CanvyTransform.prototype.scale;
+  readonly transform = CanvyTransform.prototype.transform;
+  readonly translate = CanvyTransform.prototype.translate;
 
   constructor(canvas: HTMLCanvasElement, imageSmoothingEnabled = false) {
     this.cvs = canvas;
