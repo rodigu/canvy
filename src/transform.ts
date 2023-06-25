@@ -31,4 +31,12 @@ export class CanvyTransform {
   rotate(this: Canvy, radians: number) {
     this.ctx.rotate(radians);
   }
+
+  push(this: Canvy) {
+    this.ctx.save();
+  }
+
+  pop(this: Canvy) {
+    this.ctx.restore();
+  }
 }
