@@ -13,7 +13,7 @@ export class CanvyImage {
     this.ctx.drawImage(img, x, y, wid, hei);
   }
 
-  imageSection(this: Canvy, img: HTMLImageElement, imgX: number, imgY: number, imgWid: number, imgHei: number, canvasX: number, canvasY: number, canvasWid: number, canvasHei: number) {
-    this.ctx.drawImage(img, imgX, imgY, imgWid, imgHei, canvasX, canvasY, canvasWid, canvasHei)
+  imageSection(this: Canvy, img: HTMLImageElement, xOnCanvas: number, yOnCanvas: number, widOnCanvas: number, heiOnCanvas: number, xFromImage: number, yFromImage: number, widFromImage: number, heiFromImage: number) {
+    this.ctx.drawImage(img, xOnCanvas, yOnCanvas, widOnCanvas, heiOnCanvas, xFromImage, yFromImage, widFromImage, heiFromImage)
   }
 }
