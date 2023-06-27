@@ -56,8 +56,8 @@ class CanvyImage {
         hei ??= img.height;
         this.ctx.drawImage(img, x, y, wid, hei);
     }
-    imageSection(img, imgX, imgY, imgWid, imgHei, canvasX, canvasY, canvasWid, canvasHei) {
-        this.ctx.drawImage(img, imgX, imgY, imgWid, imgHei, canvasX, canvasY, canvasWid, canvasHei);
+    imageSection(img, xOnCanvas, yOnCanvas, widOnCanvas, heiOnCanvas, xFromImage, yFromImage, widFromImage, heiFromImage) {
+        this.ctx.drawImage(img, xOnCanvas, yOnCanvas, widOnCanvas, heiOnCanvas, xFromImage, yFromImage, widFromImage, heiFromImage);
     }
 }
 class CanvyTransform {
@@ -72,6 +72,12 @@ class CanvyTransform {
     }
     rotate(radians) {
         this.ctx.rotate(radians);
+    }
+    push() {
+        this.ctx.save();
+    }
+    pop() {
+        this.ctx.restore();
     }
 }
 class Canvy {
@@ -90,29 +96,64 @@ class Canvy {
     transform = CanvyTransform.prototype.transform;
     translate = CanvyTransform.prototype.translate;
     rotate = CanvyTransform.prototype.rotate;
+    push = CanvyTransform.prototype.push;
+    pop = CanvyTransform.prototype.pop;
+    mouseX;
+    mouseY;
+    mouseIsPressed;
+    mouseButton;
     constructor(canvas, imageSmoothingEnabled = false){
         this.cvs = canvas;
         this.ctx = canvas.getContext("2d");
         this.ctx.imageSmoothingEnabled = imageSmoothingEnabled;
         this.frameRate = 40;
+        this.mouseX = 0;
+        this.mouseY = 0;
+        this.mouseIsPressed = false;
+        this.mouseButton = -1;
     }
-    set height(h) {
-        this.cvs.height = h;
+    get width() {
+        return this.cvs.width;
     }
     set width(w) {
         this.cvs.width = w;
     }
+    get height() {
+        return this.cvs.height;
+    }
+    set height(h) {
+        this.cvs.height = h;
+    }
     initiate() {
         if (!this.draw) return;
-        setInterval(this.draw, 1000 / this.frameRate);
+        setInterval(()=>{
+            if (this.draw) this.draw();
+            this.mouseIsPressed = false;
+            this.mouseButton = -1;
+        }, 1000 / this.frameRate);
+        this.cvs.addEventListener("mousemove", (event)=>{
+            this.mouseX = event.offsetX;
+            this.mouseY = event.offsetY;
+        });
+        this.cvs.addEventListener("mousedown", (event)=>{
+            this.mouseIsPressed = true;
+            this.mouseButton = event.button;
+        });
     }
 }
 function TESTER(canvas) {
     if (!canvas) return;
     const cvy = new Canvy(canvas);
-    cvy.height = 200;
-    cvy.width = 200;
-    cvy.fill(100, 120, 100);
-    cvy.rect(20, 20, 20, 20);
+    cvy.height = window.innerHeight;
+    cvy.width = window.innerWidth;
+    cvy.draw = ()=>{
+        cvy.ctx.fillStyle = "black";
+        cvy.rect(0, 0, cvy.width, cvy.height);
+        cvy.fill(255, 20, 100);
+        cvy.rect(cvy.mouseX, cvy.mouseY, 10, 10);
+        cvy.rect(10, 10, 10, 10);
+        console.log(cvy.mouseX, cvy.mouseY);
+    };
+    cvy.initiate();
 }
 export { TESTER as TESTER };

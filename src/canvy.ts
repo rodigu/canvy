@@ -34,23 +34,52 @@ export class Canvy implements CanvyDrawing, CanvyImage, CanvyTransform {
   readonly push = CanvyTransform.prototype.push;
   readonly pop = CanvyTransform.prototype.pop;
 
+  public mouseX: number;
+  public mouseY: number;
+  public mouseIsPressed: boolean;
+  public mouseButton: number;
+
   constructor(canvas: HTMLCanvasElement, imageSmoothingEnabled = false) {
     this.cvs = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     this.ctx.imageSmoothingEnabled = imageSmoothingEnabled;
     this.frameRate = 40;
+    this.mouseX = 0;
+    this.mouseY = 0;
+    this.mouseIsPressed = false;
+    this.mouseButton = -1;
   }
 
-  set height(h: number) {
-    this.cvs.height = h;
+  get width() {
+    return this.cvs.width;
   }
 
   set width(w: number) {
     this.cvs.width = w;
   }
 
+  get height() {
+    return this.cvs.height;
+  }
+
+  set height(h: number) {
+    this.cvs.height = h;
+  }
+
   initiate() {
     if (!this.draw) return;
-    setInterval(this.draw, 1000 / this.frameRate);
+    setInterval(() => {
+      if (this.draw) this.draw();
+      this.mouseIsPressed = false;
+      this.mouseButton = -1;
+    }, 1000 / this.frameRate);
+    this.cvs.addEventListener("mousemove", (event: MouseEvent) => {
+      this.mouseX = event.offsetX;
+      this.mouseY = event.offsetY;
+    });
+    this.cvs.addEventListener("mousedown", (event: MouseEvent) => {
+      this.mouseIsPressed = true;
+      this.mouseButton = event.button;
+    });
   }
 }
